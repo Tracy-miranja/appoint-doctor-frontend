@@ -1,27 +1,69 @@
-body {
-  margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    'Roboto',
-    'Oxygen',
-    'Ubuntu',
-    'Cantarell',
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.doctor-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-code {
-  font-family:
-    source-code-pro,
-    Menlo,
-    Monaco,
-    Consolas,
-    'Courier New',
-    monospace;
+.custom_nav a {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  background-color: dodgerblue;
+  color: white !important;
+}
+
+.carousel-content {
+  height: 100vh;
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.carousel-btn.prev {
+  left: 0;
+}
+
+.carousel-btn.next {
+  right: 0;
+}
+
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-content div {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* custom style for the "AddDoctor and delete doctor" button */
+.add_doctor_btn {
+  text-align: left !important;
+}
+
+.add_doctor_btn:hover,
+.add_doctor_btn:disabled {
+  background-color: #fff !important;
 }
