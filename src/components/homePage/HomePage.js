@@ -20,7 +20,7 @@ function HomePage() {
         </div>
         <div className="col-6 m-0 p-0 d-flex flex-column justify-content-center align-items-center loginForm">
           <SignInForm />
-          <p>Create an account</p>
+          <p>Need to Create a new Account?</p>
           <Button variant="primary" onClick={handleOpenSignUpModal}>
             Sign up
           </Button>

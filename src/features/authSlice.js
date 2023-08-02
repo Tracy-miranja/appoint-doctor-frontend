@@ -12,20 +12,20 @@ const initialState = {
 // Thunk to handle signUp
 export const signUp = createAsyncThunk('auth/signUp', async (userData) => {
   try {
-    const response = await axios.post('https://booking-doctor-api.onrender.com/users', {
+    const response = await axios.post('http://127.0.0.1:3000/users', {
       user: {
         name: userData.name,
         age: userData.age,
-        // email: userData.email,
-        // photo: userData.photo,
-        // role: userData.role,
+        email: userData.email,
+        photo: userData.photo,
+        role: userData.role,
         password: userData.password,
         password_confirmation: userData.password_confirmation,
         address: {
           street: userData.address.street,
           city: userData.address.city,
           state: userData.address.state,
-          // zip_code: userData.address.zip_code,
+          zip_code: userData.address.zip_code,
         },
       },
     });
@@ -83,17 +83,19 @@ const authSlice = createSlice({
 
 export const { signInSuccess, signInError, signOut } = authSlice.actions;
 
-export const signIn = (email, password) => async (dispatch) => {
+export const signIn = (name, email, password) => async (dispatch) => {
   try {
-    const response = await axios.post('https://booking-doctor-api.onrender.com/users/sign_in', {
+    const response = await axios.post('http://127.0.0.1:3000/users/sign_in', {
       user: {
+        name,
         email,
         password,
       },
     });
+
     const authToken = response.headers.authorization;
-    const userName = response.data.status.data.name;
-    const userRole = response.data.status.data.role;
+    const userName = response.data.data.name;
+    const userRole = response.data.data.role;
 
     sessionStorage.setItem('authToken', authToken);
     sessionStorage.setItem('userName', userName);
