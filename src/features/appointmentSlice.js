@@ -14,7 +14,6 @@ export const getAppointmentsThunk = createAsyncThunk('doctor/getDoctorsThunk', a
       },
     });
 
-    console.log('response', response);
     return response.data;
   } catch (error) {
     toast.error(error);
@@ -25,7 +24,7 @@ export const getAppointmentsThunk = createAsyncThunk('doctor/getDoctorsThunk', a
 export const addAppointmentThunk = createAsyncThunk('appointments/addAppointmentThunk', async (appointmentData) => {
   try {
     const token = localStorage.getItem('token');
-    console.log('token', token);
+
     const response = await axios.post('http://127.0.0.1:3000/appointments/', appointmentData, {
       headers: {
         Authorization: `${token}`,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAppointmentThunk } from '../../features/appointmentSlice';
-import { fetchDoctors } from '../../features/doctorSlice';
+// import { fetchDoctors } from '../../features/doctorSlice';
 
 const Appointment = () => {
   const dispatch = useDispatch();
@@ -17,10 +17,8 @@ const Appointment = () => {
   const listDoctors = useSelector((state) => state.doctors.doctors);
 
   useEffect(() => { // Fetch doctors on component mount
-    dispatch(fetchDoctors());
+    // dispatch(fetchDoctors());
   }, [dispatch]);
-
-  console.log(listDoctors);
 
   const handleAddAppointment = async (e) => {
     e.preventDefault();
@@ -28,8 +26,8 @@ const Appointment = () => {
     const appointmentData = {
       appointment: {
         appointment_date: appointmentDate,
-        doctor_id: parseInt(doctorId),
-        patient_id: parseInt(patientId),
+        doctor_id: parseInt(doctorId, 10),
+        patient_id: parseInt(patientId, 10),
         status: {
           active: true,
           expire: false,
@@ -44,34 +42,31 @@ const Appointment = () => {
       },
     };
 
-    console.log('appointmentData', appointmentData.appointment);
-
     try {
       dispatch(addAppointmentThunk(appointmentData));
-      console;
-      // Optionally, you can dispatch getAppointmentsThunk here to update the appointments list after adding.
     } catch (error) {
-      console.error('Error adding appointment:', error);
+      error.message = 'Failed to create appointment';
     }
   };
 
   const handleDoctorSelect = (e) => {
-    const selectedDoctorId = parseInt(e.target.value);
-     setDoctorId(selectedDoctorId);
+    const selectedDoctorId = parseInt(e.target.value, 10);
+    setDoctorId(selectedDoctorId);
   };
 
   return (
     <div>
       <form className="container mt-4" onSubmit={handleAddAppointment}>
         <div className="form-group row">
-          <label htmlFor="appointmentDate" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="appointmentDate" className="col-sm-2 col-form-label">
             Appointment Date:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="datetime-local"
               className="form-control"
               id="appointmentDate"
+              placeholder="Enter appointment date"
               value={appointmentDate}
               onChange={(e) => setAppointmentDate(e.target.value)}
             />
@@ -79,13 +74,15 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="doctorId" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="doctorId" className="col-sm-2 col-form-label">
             Doctor name:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <select
               className="form-control"
               id="doctorId"
+              name="doctorId"
+              placeholder="Select a doctor"
               value={doctorId}
               onChange={handleDoctorSelect}
             >
@@ -100,14 +97,16 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="patientId" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="patientId" className="col-sm-2 col-form-label">
             Patient ID:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="text"
               className="form-control"
+              placeholder="Patient ID"
               id="patientId"
+              name="patientId"
               value={patientId}
               onChange={(e) => setPatientId(e.target.value)}
             />
@@ -115,14 +114,16 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="street" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="street" className="col-sm-2 col-form-label">
             Street:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="text"
               className="form-control"
+              placeholder="Street"
               id="street"
+              name="street"
               value={street}
               onChange={(e) => setStreet(e.target.value)}
             />
@@ -130,14 +131,16 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="city" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="city" className="col-sm-2 col-form-label">
             City:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="text"
               className="form-control"
+              placeholder="City"
               id="city"
+              name="city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
@@ -145,14 +148,16 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="state" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="state" className="col-sm-2 col-form-label">
             State:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="text"
               className="form-control"
               id="state"
+              name="state"
+              placeholder="State"
               value={state}
               onChange={(e) => setState(e.target.value)}
             />
@@ -160,14 +165,16 @@ const Appointment = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="zipCode" className="col-sm-2 col-form-label">
+          {/* <label htmlFor="zipCode" className="col-sm-2 col-form-label">
             Zip Code:
-          </label>
+          </label> */}
           <div className="col-sm-10">
             <input
               type="text"
               className="form-control"
               id="zipCode"
+              name="zipCode"
+              placeholder="Zip Code"
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
             />
