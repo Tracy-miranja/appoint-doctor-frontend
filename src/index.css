@@ -1,7 +1,3 @@
-* {
-  background: #086f83;
-}
-
 .doctor-photo {
   width: 100px;
   height: 100px;
@@ -11,13 +7,12 @@
 
 .custom_nav a {
   text-decoration: none;
-  color: #fff;
+  color: black;
 }
 
 .active {
-  background-color: rgb(255, 71, 30);
-  color: #fff !important;
-  font-weight: 700;
+  background-color: dodgerblue;
+  color: white !important;
 }
 
 .carousel-content {
@@ -71,4 +66,8 @@
 .add_doctor_btn:hover,
 .add_doctor_btn:disabled {
   background-color: #fff !important;
+}
+
+.addDoctor-modal{
+  width: 500px;
 }
