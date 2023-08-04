@@ -26,7 +26,7 @@ const Appointment = () => {
     const appointmentData = {
       appointment: {
         appointment_date: appointmentDate,
-        doctor_id: parseInt(doctorId, 10),
+        doctor_id: localStorage.getItem('userId'),
         patient_id: parseInt(patientId, 10),
         status: {
           active: true,
@@ -93,23 +93,6 @@ const Appointment = () => {
                 </option>
               ))}
             </select>
-          </div>
-        </div>
-
-        <div className="form-group row">
-          {/* <label htmlFor="patientId" className="col-sm-2 col-form-label">
-            Patient ID:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Patient ID"
-              id="patientId"
-              name="patientId"
-              value={patientId}
-              onChange={(e) => setPatientId(e.target.value)}
-            />
           </div>
         </div>
 
