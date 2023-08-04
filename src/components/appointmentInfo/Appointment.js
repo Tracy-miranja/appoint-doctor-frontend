@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAppointmentThunk } from '../../features/appointmentSlice';
-// import { fetchDoctors } from '../../features/doctorSlice';
+import { fetchDoctors } from '../../features/doctorSlice';
 
 const Appointment = () => {
   const dispatch = useDispatch();
 
   const [appointmentDate, setAppointmentDate] = useState('');
   const [doctorId, setDoctorId] = useState('');
-  const [patientId, setPatientId] = useState('');
+  // const [patientId, setPatientId] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
@@ -17,7 +17,7 @@ const Appointment = () => {
   const listDoctors = useSelector((state) => state.doctors.doctors);
 
   useEffect(() => { // Fetch doctors on component mount
-    // dispatch(fetchDoctors());
+    dispatch(fetchDoctors());
   }, [dispatch]);
 
   const handleAddAppointment = async (e) => {
@@ -26,8 +26,8 @@ const Appointment = () => {
     const appointmentData = {
       appointment: {
         appointment_date: appointmentDate,
-        doctor_id: localStorage.getItem('userId'),
-        patient_id: parseInt(patientId, 10),
+        doctor_id: doctorId,
+        patient_id: sessionStorage.getItem('userId'),
         status: {
           active: true,
           expire: false,
@@ -44,6 +44,14 @@ const Appointment = () => {
 
     try {
       dispatch(addAppointmentThunk(appointmentData));
+      setAppointmentDate('');
+      setDoctorId('');
+      setStreet('');
+      setCity('');
+      setState('');
+      setZipCode('');
+
+      // Optionally, display a success message to the user.
     } catch (error) {
       error.message = 'Failed to create appointment';
     }
@@ -67,6 +75,7 @@ const Appointment = () => {
               className="form-control"
               id="appointmentDate"
               placeholder="Enter appointment date"
+              required
               value={appointmentDate}
               onChange={(e) => setAppointmentDate(e.target.value)}
             />
@@ -83,6 +92,7 @@ const Appointment = () => {
               id="doctorId"
               name="doctorId"
               placeholder="Select a doctor"
+              required
               value={doctorId}
               onChange={handleDoctorSelect}
             >
@@ -107,6 +117,7 @@ const Appointment = () => {
               placeholder="Street"
               id="street"
               name="street"
+              required
               value={street}
               onChange={(e) => setStreet(e.target.value)}
             />
@@ -123,6 +134,7 @@ const Appointment = () => {
               className="form-control"
               placeholder="City"
               id="city"
+              required
               name="city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -137,6 +149,7 @@ const Appointment = () => {
           <div className="col-sm-10">
             <input
               type="text"
+              required
               className="form-control"
               id="state"
               name="state"
@@ -157,6 +170,7 @@ const Appointment = () => {
               className="form-control"
               id="zipCode"
               name="zipCode"
+              required
               placeholder="Zip Code"
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
