@@ -23,7 +23,7 @@ export const getAppointmentsThunk = createAsyncThunk('doctor/getDoctorsThunk', a
 
 export const addAppointmentThunk = createAsyncThunk('appointments/addAppointmentThunk', async (appointmentData) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('authToken');
 
     const response = await axios.post('http://127.0.0.1:3000/appointments/', appointmentData, {
       headers: {
