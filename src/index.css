@@ -44,6 +44,18 @@
   right: 0;
 }
 
+.previd{
+  position: absolute;
+  top: 90%;
+  left: 18%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .carousel-container {
   width: 100%;
   overflow: hidden;
@@ -71,4 +83,8 @@
 
 .addDoctor-modal {
   width: 500px;
+}
+
+.no-decoration {
+  text-decoration: none;
 }

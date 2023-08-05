@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchDoctors } from '../../features/doctorSlice';
 import NavBar from '../navbar/NavBar';
 
@@ -64,11 +65,13 @@ function DoctorList() {
                 .slice(currentGroupIndex * groupSize, (currentGroupIndex + 1) * groupSize)
                 .map((doctor) => (
                   <div key={doctor.id}>
-                    <img src={doctor.photo} alt={doctor.name} className="doctor-photo rounded-circle" />
-                    <div>
-                      <h5>{doctor.name}</h5>
-                      <p>{doctor.specialization}</p>
-                    </div>
+                    <Link to={`/doctors/${doctor.id}`} className="doctor-link no-decoration">
+                      <img src={doctor.photo} alt={doctor.name} className="doctor-photo rounded-circle" />
+                      <div>
+                        <h5>{doctor.name}</h5>
+                        <p>{doctor.specialization}</p>
+                      </div>
+                    </Link>
                   </div>
                 ))}
             </div>

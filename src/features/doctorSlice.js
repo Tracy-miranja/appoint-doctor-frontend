@@ -51,6 +51,7 @@ export const fetchDoctors = createAsyncThunk('doctors/fetchDoctors', async () =>
       },
     });
     return response.data;
+    // console.log(response.data);
   } catch (error) {
     throw new Error(error.message);
   }
