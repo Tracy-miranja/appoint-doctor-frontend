@@ -1,7 +1,4 @@
-* {
-  background: #086f83;
-}
-
+/* Doctor photo */
 .doctor-photo {
   width: 100px;
   height: 100px;
@@ -11,13 +8,12 @@
 
 .custom_nav a {
   text-decoration: none;
-  color: #fff;
+  color: black;
 }
 
 .active {
-  background-color: rgb(255, 71, 30);
-  color: #fff !important;
-  font-weight: 700;
+  background-color: dodgerblue;
+  color: white !important;
 }
 
 .carousel-content {
@@ -48,6 +44,18 @@
   right: 0;
 }
 
+.previd {
+  position: absolute;
+  top: 90%;
+  left: 18%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .carousel-container {
   width: 100%;
   overflow: hidden;
@@ -71,4 +79,12 @@
 .add_doctor_btn:hover,
 .add_doctor_btn:disabled {
   background-color: #fff !important;
+}
+
+.addDoctor-modal {
+  width: 500px;
+}
+
+.no-decoration {
+  text-decoration: none;
 }
