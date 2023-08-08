@@ -1,113 +1,162 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctors } from '../../features/doctorSlice';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
+import { FaCaretLeft } from 'react-icons/fa6';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import NavBar from '../navbar/NavBar';
+import './doctor.css';
 
-function getDoctorByIndex(doctors, index) {
-  if (index >= 0 && index < doctors.length) {
-    return doctors[index];
-  }
-  return null;
+function formatDateAndTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+
+  return `${formattedDate}, ${formattedTime}`;
 }
 
-function DoctorDetails() {
+const DoctorDetails = () => {
+  const API_BASE_URL = 'https://booking-doctor-api-v1.onrender.com/users';
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const { status, error, doctors } = useSelector((state) => state.doctors);
-  const navigate = useNavigate();
+  const [doctor, setDoctor] = useState(null);
+  const [appointments, setAppointment] = useState([]);
+  const [nextDoctorId, setNextDoctorId] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
+    Promise.all([
+      axios.get(`${API_BASE_URL}/doctors/${id}`),
+      axios.get(`${API_BASE_URL}?role=doctor`),
+    ])
+      .then(([doctorResponse, doctorsResponse]) => {
+        setDoctor(doctorResponse.data.user);
+        setAppointment(doctorResponse.data.appointments);
+        const doctors = doctorsResponse.data;
+        setNextDoctorId(doctors);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(`Failed to fetch doctor details.${error}`);
+        setLoading(false);
+      });
+  }, [id]);
 
-  const doctorIndex = doctors.findIndex((doctor) => doctor.id == id);
-  const doctor = doctors[doctorIndex];
-
-  if (status === 'loading') {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div style={{ width: 200, height: 200 }}>
+        loading...
+      </div>
+    );
   }
 
-  if (status === 'failed') {
+  if (error) {
     return (
       <div>
         Error:
+        {' '}
         {error}
       </div>
     );
   }
 
-  const handlePrevDoctor = () => {
-    const prevDoctorId = parseInt(doctorIndex, 10) - 1;
-    const hasPrevDoctor = getDoctorByIndex(doctors, prevDoctorId);
-    if (hasPrevDoctor) {
-      navigate(`/doctors/${hasPrevDoctor?.id || ''}`);
+  const handleNextDoctor = () => {
+    const currentDoctorIndex = nextDoctorId.findIndex((d) => d.id === parseInt(id, 10));
+    if (currentDoctorIndex !== -1 && currentDoctorIndex < nextDoctorId.length - 1) {
+      const nextDoctor = nextDoctorId[currentDoctorIndex + 1];
+      window.location.href = `/doctor_details/${nextDoctor.id}`;
     }
   };
 
-  const handleNextDoctor = () => {
-    const nextDoctorId = parseInt(doctorIndex, 10) + 1;
-    const hasNextDoctor = getDoctorByIndex(doctors, nextDoctorId);
-    if (hasNextDoctor) {
-      navigate(`/doctors/${hasNextDoctor?.id || ''}`);
-    }
-  };
+  const scaledRating = (doctor.rating / 100) * 20;
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-lg-2 col-md-2 col-12 d-flex flex-column justify-content-between custom_nav">
+        <div className="col-lg-2 col-md-2 col-12 mx-0 px-0">
           <NavBar />
         </div>
-        <div className="col-lg-10 col-md-10 col-12 p-0">
-          <div className="row d-flex border border-primary vh-100 justify-content-center align-items-center">
-            <div className="col-12 col-md-5 p-2 overflow-hidden">
-              <button
-                type="button"
-                className="btn btn-primary rounded-end-pill previd d-none d-md-block"
-                onClick={handlePrevDoctor}
-                disabled={!doctor || doctorIndex <= 0}
-              >
-                Prev
-              </button>
-              <img
-                src={doctor?.photo || ''}
-                alt={doctor?.name || ''}
-                className="img-fluid doctor-photo"
-                style={{ height: 'auto', width: '100%' }}
-              />
-            </div>
-            <div className="col-12 col-md-5 d-flex flex-column justify-content-center align-items-center">
-              <h1>{doctor?.name || ''}</h1>
-              <p>
-                <strong>Email: </strong>
-                {doctor?.email || ''}
-              </p>
-              <p>
-                <strong>Specialization: </strong>
-                {doctor?.specialization || ''}
-              </p>
-              <p>
-                <strong>Qualification: </strong>
-                {doctor?.qualification || ''}
-              </p>
-              <p>
-                <strong>Age: </strong>
-                {doctor?.age || ''}
-              </p>
-            </div>
+        <div className="col-lg-6 col-md-6 col-12 d-flex flex-column mx-0 px-0 text-center doctor_details_bg">
+          <div>
+            <img src={doctor.photo} alt={doctor.name} className="img-fluid rounded-circle" />
+            <h2>{doctor.name}</h2>
+            <p>{doctor.specialization}</p>
           </div>
+          <button type="button" onClick={handleNextDoctor} className="nextBtn rounded-end-pill">
+            <FaCaretLeft />
+          </button>
+        </div>
+
+        <div className="col-lg-4 col-md-4 col-12">
+          <h4>Doctor Details</h4>
+          <table className="table">
+            <tbody>
+              <tr>
+                <td>Age:</td>
+                <td>{doctor.age}</td>
+              </tr>
+              <tr>
+                <td>Email:</td>
+                <td>{doctor.email}</td>
+              </tr>
+              <tr>
+                <td>Qualification:</td>
+                <td>{doctor.qualification}</td>
+              </tr>
+              <tr>
+                <td>Experiences:</td>
+                <td>
+                  {doctor.experiences}
+                  {' '}
+                  <span>Years</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Active Appointments:</td>
+                <td>{appointments.length}</td>
+              </tr>
+              <tr>
+                <td>Consultation Fee:</td>
+                <td>
+                  $
+                  {doctor.consultation_fee}
+                </td>
+              </tr>
+              <tr>
+                <td>Available From:</td>
+                <td>{formatDateAndTime(doctor.available_from)}</td>
+              </tr>
+              <tr>
+                <td>Available To:</td>
+                <td>{formatDateAndTime(doctor.available_to)}</td>
+              </tr>
+              <tr>
+                <td>Rating:</td>
+                <td>
+                  <div style={{ width: 100, height: 100 }}>
+                    <CircularProgressbarWithChildren value={scaledRating * 100}>
+                      <div style={{ fontSize: 20, fontWeight: 'bold' }}>{scaledRating.toFixed(1)}</div>
+                    </CircularProgressbarWithChildren>
+                  </div>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" className="appointBtn rounded-end-pill rounded-start-pill">
+            <Link to={`/appointment/${doctor.id}`}>Make an Appointment</Link>
+          </button>
         </div>
       </div>
-      <button
-        type="button"
-        className="carousel-btn next btn btn-primary rounded-start-pill d-none d-md-block"
-        onClick={handleNextDoctor}
-      >
-        Next
-      </button>
     </div>
   );
-}
+};
 
 export default DoctorDetails;
