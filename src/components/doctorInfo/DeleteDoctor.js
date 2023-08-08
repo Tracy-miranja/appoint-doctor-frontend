@@ -71,12 +71,46 @@ function DeleteDoctor() {
       </Container>
     );
   }
-  
+
+ const handleDeleteDoctor = (doctorId) => {
+    dispatch(deleteDoctor(doctorId));
+  };
+
   return (
-    <div>
-      <h2>Delete Doctor Page</h2>
-      {/* Add your logic and UI to delete a doctor */}
-    </div>
+    <Container fluid className="px-0">
+      <Row>
+        <Col md={2}>
+          <NavBar />
+        </Col>
+        <Col md={10}>
+          <h2>Doctor List</h2>
+          <div className="scrollable">
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Doctor Name</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {doctors.map((doctor) => (
+                  <tr key={doctor.id}>
+                    <td>{doctor ? doctor.name : 'Unknown'}</td>
+                    <td>Active</td>
+                    <td>
+                      <Button variant="danger" onClick={() => handleDeleteDoctor(doctor.id)}>
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
