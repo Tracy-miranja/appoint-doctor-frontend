@@ -4,23 +4,9 @@ import axios from 'axios';
 import { FaCaretLeft } from 'react-icons/fa6';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 import './doctor.css';
-
-function formatDateAndTime(dateTimeString) {
-  const date = new Date(dateTimeString);
-  const formattedDate = date.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-  const formattedTime = date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-
-  return `${formattedDate}, ${formattedTime}`;
-}
+import { formatDateAndTime } from '../appointmentInfo/MyAppointments';
 
 const DoctorDetails = () => {
   const API_BASE_URL = 'https://booking-doctor-api-v1.onrender.com/users';
@@ -48,7 +34,6 @@ const DoctorDetails = () => {
         setLoading(false);
       });
   }, [id]);
-
   if (loading) {
     return (
       <div style={{ width: 200, height: 200 }}>

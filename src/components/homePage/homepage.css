@@ -1,13 +1,5 @@
-.container-fluid {
-  padding-top: 2.5rem;
-}
-
-.animate-jump {
-  padding-bottom: 4rem;
-}
-
 .backgroundImg {
-  background: url('../../assets/bg1.jpg');
+  background-image: url('../../assets/bg2.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: color-burn;
@@ -16,8 +8,8 @@
 }
 
 .boxshadow {
-  background-color: #bcb9b9;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 10px;
   width: 100%;

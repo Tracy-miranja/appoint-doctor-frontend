@@ -4,7 +4,7 @@ import {
   Table, Button, Container, Row, Col,
 } from 'react-bootstrap';
 import { fetchAppointments, deleteAppointment } from '../../features/appointmentSlice';
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 
 // Define formatLocation function
 function formatLocation(location) {
