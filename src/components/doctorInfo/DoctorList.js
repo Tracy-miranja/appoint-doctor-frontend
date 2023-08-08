@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchDoctors } from '../../features/doctorSlice';
-import NavBar from '../navbar/Navbar';
+import Navbar from '../navbar/Navbar';
 
 function DoctorList() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ function DoctorList() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-lg-2 col-md-2 col-12 d-flex flex-column justify-content-between custom_nav">
-          <NavBar />
+          <Navbar />
         </div>
 
         <div className="col-lg-10 col-md-10 col-12 p-0">

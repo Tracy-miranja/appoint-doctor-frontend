@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDoctors } from '../../features/doctorSlice';
-import NavBar from '../navbar/Navbar';
+import Navbar from '../navbar/Navbar';
 
 function getDoctorByIndex(doctors, index) {
   if (index >= 0 && index < doctors.length) {
@@ -57,7 +57,7 @@ function DoctorDetails() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-lg-2 col-md-2 col-12 d-flex flex-column justify-content-between custom_nav">
-          <NavBar />
+          <Navbar />
         </div>
         <div className="col-lg-10 col-md-10 col-12 p-0">
           <div className="row d-flex border border-primary vh-100 justify-content-center align-items-center">
