@@ -1,5 +1,5 @@
 {
-  "name": "hello-react-front-end",
+  "name": "appoint-doctor-front-end",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
