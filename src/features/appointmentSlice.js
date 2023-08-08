@@ -14,7 +14,6 @@ export const addAppointment = createAsyncThunk(
   'appointments/addAppointment',
   async (formData) => {
     try {
-
       const response = await axios.post('https://booking-doctor-api-v1.onrender.com/appointments', formData, {
 
         headers: {
@@ -54,7 +53,6 @@ export const fetchAppointments = createAsyncThunk('appointments/fetchAppointment
 
 export const deleteAppointment = createAsyncThunk('appointments/deleteAppointment', async (appointmentId) => {
   try {
-
     await axios.delete(`https://booking-doctor-api-v1.onrender.com/appointments/${appointmentId}`, {
 
       headers: {
