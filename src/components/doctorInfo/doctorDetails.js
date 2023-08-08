@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDoctors } from '../../features/doctorSlice';
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 
 function getDoctorByIndex(doctors, index) {
   if (index >= 0 && index < doctors.length) {
