@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchDoctors } from '../../features/doctorSlice';
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 
 function DoctorList() {
   const dispatch = useDispatch();
