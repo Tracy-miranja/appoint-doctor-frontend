@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { fetchAppointments, deleteAppointment } from '../../features/appointmentSlice';
 
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 // Define formatLocation function
 function formatLocation(location) {
   return `${location.street}, ${location.state}, ${location.city}, ${location.zip_code}`;

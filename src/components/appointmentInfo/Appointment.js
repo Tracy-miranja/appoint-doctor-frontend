@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 import { addAppointment } from '../../features/appointmentSlice';
 import { fetchDoctors } from '../../features/doctorSlice';
 import './appointment.css';

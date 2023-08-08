@@ -5,7 +5,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import NavBar from '../navbar/NavBar';
+import NavBar from '../navbar/Navbar';
 import { addAppointment } from '../../features/appointmentSlice';
 import './appointment.css';
 
