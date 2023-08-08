@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const BASE_URL = 'http://127.0.0.1:3000/users';
+
 const initialState = {
   status: 'idle',
   error: null,
-  doctors: [], // To store the fetched doctor data
-  authToken: sessionStorage.getItem('authToken') || null, // To store the authentication token from session storage
+  references: null,
+  doctors: [],
+  authToken: sessionStorage.getItem('authToken') || null,
 };
 
 // Async Thunk for adding a doctor
 export const addDoctor = createAsyncThunk('doctors/addDoctor', async (doctorData) => {
   try {
-    const response = await axios.post('http://localhost:3000/users', {
+    const response = await axios.post(BASE_URL, {
       user: {
         name: doctorData.name,
         age: doctorData.age,
@@ -45,17 +48,33 @@ export const addDoctor = createAsyncThunk('doctors/addDoctor', async (doctorData
 // Async Thunk for fetching doctors
 export const fetchDoctors = createAsyncThunk('doctors/fetchDoctors', async () => {
   try {
-    const response = await axios.get('http://localhost:3000/users?role=doctor', {
+    const response = await axios.get('http://127.0.0.1:3000/users?role=doctor', {
       headers: {
         Authorization: sessionStorage.getItem('authToken'),
       },
     });
     return response.data;
-    // console.log(response.data);
   } catch (error) {
     throw new Error(error.message);
   }
 });
+
+export const deleteDoctor = createAsyncThunk(
+  'appointments/deleteDoctor',
+  async (doctorId, { rejectWithValue }) => {
+    try {
+      await axios.delete(`http://127.0.0.1:3000/users/${doctorId}`, {
+        headers: {
+          Authorization: sessionStorage.getItem('authToken'),
+        },
+      });
+      return doctorId;
+    } catch (error) {
+      const { message, references } = error.response.data;
+      return rejectWithValue({ message, references });
+    }
+  },
+);
 
 const doctorsSlice = createSlice({
   name: 'doctors',
@@ -64,7 +83,6 @@ const doctorsSlice = createSlice({
     setAuthToken(state, action) {
       state.authToken = action.payload;
     },
-    // Other synchronous reducers here if needed
   },
   extraReducers: (builder) => {
     builder
@@ -85,11 +103,27 @@ const doctorsSlice = createSlice({
       })
       .addCase(fetchDoctors.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.doctors = action.payload; // Update the doctors array with fetched data
+        state.doctors = action.payload;
       })
       .addCase(fetchDoctors.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(deleteDoctor.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(deleteDoctor.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.doctors = state.doctors.filter(
+          (doctor) => doctor.id !== action.payload,
+        );
+      })
+      .addCase(deleteDoctor.rejected, (state, action) => {
+        const { message, references } = action.payload;
+        state.status = 'failed';
+        state.error = message;
+        state.references = references;
       });
   },
 });
