@@ -30,11 +30,7 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-## 🪵 Documentation <a name="key-features"></a>
-
-- [ API Documentation Here](https://documenter.getpostman.com/view/26957552/2s9XxsVGHT)
-
-# 📖 Appoint With A Doctor Back-End <a name="about-project"></a>
+# 📖 Appoint With A Doctor FrontEnd <a name="about-project"></a>
 
 The Appoint Doctor Project is a user-friendly web app for booking doctor appointments. It offers secure login using Devise-jwt and supports multiple user roles (patient, doctor, admin). Admins can add/delete doctors. Users can schedule/cancel appointments and view their appointment list. The app simplifies the process of finding and managing medical appointments online.
 
@@ -45,7 +41,7 @@ The Appoint Doctor Project is a user-friendly web app for booking doctor appoint
 <details>
   <summary>Client</summary>
   <ul>
-    <li><p> <b>Ruby: </b> The primary programming language for the project.</p></li>
+    <li><p> <b>React-Redux </b> The primary programming language for the project.</p></li>
   </ul>
 </details>
 
@@ -92,8 +88,6 @@ In order to run this project you need:
 - Postgresql
 - Node.js
 - git
-- Install [ruby](https://www.ruby-lang.org/en/documentation/installation/) on your computer
-- Install [rails](https://www.tutorialspoint.com/ruby-on-rails/rails-installation.htm#) on your computer
 
 ### Setup
 
@@ -101,7 +95,7 @@ Clone this repository to your desired folder:
 
 ```sh
   cd your-desired-folder
-  https://github.com/Tracy-miranja/appoint-doctor-backend
+  https://github.com/Tracy-miranja/appoint-doctor-front-end
 ```
 
 ### Install
@@ -109,26 +103,25 @@ Clone this repository to your desired folder:
 - Install this project with:
 
 - Linters
-- Rubocop
-- Ruby On Rails
+- Eslint
+- Stylint
 
 - Follow the step:
 
 ```sh
-cd appoint-doctor-backend
+cd appoint-doctor-front-end
 npm install
-bundle install
-rails s
+npm run start
 ```
 
 ### Usage
 
-- Run the app with `rails s` in the terminal from the root folder of the project.
+- Run the app with `npm run start` in the terminal from the root folder of the project.
 
 ### Test
 
 ```sh
-  rspec spec/filename.rb
+  npm run test
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
