@@ -1,0 +1,24 @@
+.container-fluid {
+  padding-top: 2.5rem;
+}
+
+.animate-jump {
+  padding-bottom: 4rem;
+}
+
+.backgroundImg {
+  background: url('../../assets/bg1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: color-burn;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.boxshadow {
+  background-color: #bcb9b9;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+}
