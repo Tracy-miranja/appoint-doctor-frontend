@@ -6,7 +6,21 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import NavBar from '../navbar/Navbar';
 import './doctor.css';
-import { formatDateAndTime } from '../appointmentInfo/MyAppointments';
+
+function formatDateAndTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+
+  return `${formattedDate}, ${formattedTime}`;
+}
 
 const DoctorDetails = () => {
   const API_BASE_URL = 'https://booking-doctor-api-v1.onrender.com/users';
@@ -53,7 +67,6 @@ const DoctorDetails = () => {
     );
   }
 
-  
   const handleNextDoctor = () => {
     const currentDoctorIndex = nextDoctorId.findIndex((d) => d.id === parseInt(id, 10));
     if (currentDoctorIndex !== -1 && currentDoctorIndex < nextDoctorId.length - 1) {
@@ -63,11 +76,6 @@ const DoctorDetails = () => {
   };
 
   const scaledRating = (doctor.rating / 100) * 20;
-
-  
-
-
-
 
   return (
     <div className="container-fluid">
@@ -152,5 +160,3 @@ const DoctorDetails = () => {
 };
 
 export default DoctorDetails;
-
-
