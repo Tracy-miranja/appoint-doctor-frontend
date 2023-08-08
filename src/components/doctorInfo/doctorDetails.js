@@ -4,10 +4,10 @@ import axios from 'axios';
 import { FaCaretLeft } from 'react-icons/fa6';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+
 import NavBar from '../navbar/Navbar';
 import './doctor.css';
 import { formatDateAndTime } from '../appointmentInfo/MyAppointments';
-
 const DoctorDetails = () => {
   const API_BASE_URL = 'https://booking-doctor-api-v1.onrender.com/users';
   const { id } = useParams();

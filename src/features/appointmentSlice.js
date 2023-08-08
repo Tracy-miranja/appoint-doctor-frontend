@@ -14,7 +14,9 @@ export const addAppointment = createAsyncThunk(
   'appointments/addAppointment',
   async (formData) => {
     try {
+
       const response = await axios.post('https://booking-doctor-api-v1.onrender.com/appointments', formData, {
+
         headers: {
           Authorization: sessionStorage.getItem('authToken'),
         },
@@ -30,10 +32,12 @@ export const fetchAppointments = createAsyncThunk('appointments/fetchAppointment
   try {
     const [appointmentsResponse, patientsResponse, doctorsResponse] = await Promise.all([
       axios.get('https://booking-doctor-api-v1.onrender.com/appointments', {
+
         headers: {
           Authorization: sessionStorage.getItem('authToken'),
         },
       }),
+
       axios.get('https://booking-doctor-api-v1.onrender.com/users?role=patient'),
       axios.get('https://booking-doctor-api-v1.onrender.com/users?role=doctor'),
     ]);
@@ -50,7 +54,9 @@ export const fetchAppointments = createAsyncThunk('appointments/fetchAppointment
 
 export const deleteAppointment = createAsyncThunk('appointments/deleteAppointment', async (appointmentId) => {
   try {
+
     await axios.delete(`https://booking-doctor-api-v1.onrender.com/appointments/${appointmentId}`, {
+
       headers: {
         Authorization: sessionStorage.getItem('authToken'),
       },
