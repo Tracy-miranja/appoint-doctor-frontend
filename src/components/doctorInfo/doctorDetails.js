@@ -1,8 +1,40 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctors } from '../../features/doctorSlice';
-import NavBar from '../navbar/NavBar';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
+import { FaCaretLeft } from 'react-icons/fa6';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import NavBar from '../navbar/Navbar';
+import './doctor.css';
+import { formatDateAndTime } from '../appointmentInfo/MyAppointments';
+
+const DoctorDetails = () => {
+  const API_BASE_URL = 'https://booking-doctor-api-v1.onrender.com/users';
+  const { id } = useParams();
+  const [doctor, setDoctor] = useState(null);
+  const [appointments, setAppointment] = useState([]);
+  const [nextDoctorId, setNextDoctorId] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`${API_BASE_URL}/doctors/${id}`),
+      axios.get(`${API_BASE_URL}?role=doctor`),
+    ])
+      .then(([doctorResponse, doctorsResponse]) => {
+        setDoctor(doctorResponse.data.user);
+        setAppointment(doctorResponse.data.appointments);
+        const doctors = doctorsResponse.data;
+        setNextDoctorId(doctors);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(`Failed to fetch doctor details.${error}`);
+        setLoading(false);
+      });
+  }, [id]);
+}
 
 function getDoctorByIndex(doctors, index) {
   if (index >= 0 && index < doctors.length) {
