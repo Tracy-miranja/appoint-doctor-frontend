@@ -1,195 +1,185 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addAppointmentThunk } from '../../features/appointmentSlice';
-// import { fetchDoctors } from '../../features/doctorSlice';
-// import { fetchDoctors } from '../../features/doctorSlice';
-const fetchDoctors = {}; // delete this line and uncomment line above
+import {
+  Container, Row, Col, Form, Button,
+} from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import NavBar from '../navbar/NavBar';
+import { addAppointment } from '../../features/appointmentSlice';
+import { fetchDoctors } from '../../features/doctorSlice';
+import './appointment.css';
+import { formatDateAndTime } from './MyAppointments';
 
 const Appointment = () => {
   const dispatch = useDispatch();
-
-  const [appointmentDate, setAppointmentDate] = useState('');
-  const [doctorId, setDoctorId] = useState('');
-  // const [patientId, setPatientId] = useState('');
-  const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zipCode, setZipCode] = useState('');
-
-  const listDoctors = useSelector((state) => state.doctors.doctors);
-
-  useEffect(() => { // Fetch doctors on component mount
+  const { userName, userID } = useSelector((state) => state.auth);
+  const doctors = useSelector((state) => state.doctors.doctors);
+  useEffect(() => {
     dispatch(fetchDoctors());
   }, [dispatch]);
 
-  const handleAddAppointment = async (e) => {
-    e.preventDefault();
-
-    const appointmentData = {
-      appointment: {
-        appointment_date: appointmentDate,
-        doctor_id: doctorId,
-        patient_id: sessionStorage.getItem('userId'),
-        status: {
-          active: true,
-          expire: false,
-          cancel: false,
-        },
-        location: {
-          street,
-          city,
-          state,
-          zip_code: zipCode,
-        },
-      },
-    };
-
-    try {
-      dispatch(addAppointmentThunk(appointmentData));
-      setAppointmentDate('');
-      setDoctorId('');
-      setStreet('');
-      setCity('');
-      setState('');
-      setZipCode('');
-
-      // Optionally, display a success message to the user.
-    } catch (error) {
-      error.message = 'Failed to create appointment';
-    }
+  const initialFormData = {
+    appointment_date: '',
+    patient_id: userID,
+    doctor_id: '',
+    status: {
+      active: true,
+      expire: false,
+      cancel: false,
+    },
+    location: {
+      street: '',
+      state: '',
+      city: '',
+      zip_code: 520,
+    },
   };
 
-  const handleDoctorSelect = (e) => {
-    const selectedDoctorId = parseInt(e.target.value, 10);
-    setDoctorId(selectedDoctorId);
+  const [formData, setFormData] = useState({ ...initialFormData });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(addAppointment(formData));
+    setFormData({ ...initialFormData });
+    window.location.href = '/my_appointments';
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => {
+      if (name.startsWith('location.')) {
+        const location = name.split('.')[1];
+        return {
+          ...prevFormData,
+          location: {
+            ...prevFormData.location,
+            [location]: value,
+          },
+        };
+      }
+      return {
+        ...prevFormData,
+        [name]: value,
+      };
+    });
   };
 
   return (
-    <div>
-      <form className="container mt-4" onSubmit={handleAddAppointment}>
-        <div className="form-group row">
-          {/* <label htmlFor="appointmentDate" className="col-sm-2 col-form-label">
-            Appointment Date:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="datetime-local"
-              className="form-control"
-              id="appointmentDate"
-              placeholder="Enter appointment date"
-              required
-              value={appointmentDate}
-              onChange={(e) => setAppointmentDate(e.target.value)}
-            />
-          </div>
-        </div>
+    <>
+      <Container fluid>
+        <Row className=" appointmentBg">
+          <Col md={2} className="px-0">
+            <NavBar />
+          </Col>
+          <Col md={10} className="p-4">
+            <Form onSubmit={handleSubmit} className="boxshadowAppoint p-4">
+              <Form.Group controlId="patientName">
+                <Form.Label>Patient Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="patientName"
+                  value={userName}
+                  readOnly
+                />
+              </Form.Group>
 
-        <div className="form-group row">
-          {/* <label htmlFor="doctorId" className="col-sm-2 col-form-label">
-            Doctor name:
-          </label> */}
-          <div className="col-sm-10">
-            <select
-              className="form-control"
-              id="doctorId"
-              name="doctorId"
-              placeholder="Select a doctor"
-              required
-              value={doctorId}
-              onChange={handleDoctorSelect}
-            >
-              <option value="">Select a doctor</option>
-              {listDoctors.map((doctor) => (
-                <option key={doctor.id} value={doctor.id}>
-                  {doctor.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+              <Form.Group controlId="doctorId">
+                <Form.Label>Select Doctor</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="doctor_id"
+                  value={formData.doctor_id}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a doctor...</option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                      {' '}
+                      -
+                      {' '}
+                      {doctor.specialization}
+                      <p>Availability:</p>
+                      {'From: '}
+                      {formatDateAndTime(doctor.available_from)}
+                      {' '}
+                      {'To: '}
+                      {formatDateAndTime(doctor.available_to)}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
 
-        <div className="form-group row">
-          {/* <label htmlFor="street" className="col-sm-2 col-form-label">
-            Street:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Street"
-              id="street"
-              name="street"
-              required
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
-            />
-          </div>
-        </div>
+              <Form.Group controlId="appointmentDate">
+                <Form.Label>Appointment Date</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  name="appointment_date"
+                  value={formData.appointment_date}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-        <div className="form-group row">
-          {/* <label htmlFor="city" className="col-sm-2 col-form-label">
-            City:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="City"
-              id="city"
-              required
-              name="city"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-          </div>
-        </div>
+              <Form.Group controlId="location.street">
+                <Form.Label>Street</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="location.street"
+                  value={formData.location.street}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select street...</option>
+                  <option value="524, Bhidan street">524, Bhidan street</option>
+                  <option value="7895, Molla Hata street">7895, Molla Hata street</option>
+                  <option value="9863, Dulhan street">9863, Dulhan street</option>
+                  <option value="1545, Kabiry street">1545, Kabiry street</option>
+                </Form.Control>
+              </Form.Group>
 
-        <div className="form-group row">
-          {/* <label htmlFor="state" className="col-sm-2 col-form-label">
-            State:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="text"
-              required
-              className="form-control"
-              id="state"
-              name="state"
-              placeholder="State"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            />
-          </div>
-        </div>
+              <Form.Group controlId="location.state">
+                <Form.Label>State</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="location.state"
+                  value={formData.location.state}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select state...</option>
+                  <option value="Mymensignh">Mymensignh</option>
+                  <option value="RBT">RBT</option>
+                  <option value="NYC">NYC</option>
+                  <option value="KTH">KTH</option>
+                </Form.Control>
+              </Form.Group>
 
-        <div className="form-group row">
-          {/* <label htmlFor="zipCode" className="col-sm-2 col-form-label">
-            Zip Code:
-          </label> */}
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              id="zipCode"
-              name="zipCode"
-              required
-              placeholder="Zip Code"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-            />
-          </div>
-        </div>
+              <Form.Group controlId="location.city">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="location.city"
+                  value={formData.location.city}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select city...</option>
+                  <option value="Dhaka">Dhaka</option>
+                  <option value="Chattagram">Chattagram</option>
+                  <option value="Bhola">Bhola</option>
+                  <option value="Jamalpur">Jamalpur</option>
+                </Form.Control>
+              </Form.Group>
 
-        <div className="form-group row">
-          <div className="col-sm-12 text-center">
-            <button type="submit" className="btn btn-primary">
-              Add Appointment
-            </button>
-          </div>
-        </div>
-      </form>
-
-    </div>
+              <Button className="mt-2 w-100" variant="primary" type="submit">
+                Add Appointment
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 
