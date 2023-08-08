@@ -118,6 +118,11 @@ const AddDoctor = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpMo
           </Row>
 
           <Row className="mb-3">
+            <Form.Group as={Col} controlId="experiences">
+              <Form.Label>Experiences</Form.Label>
+              <Form.Control type="number" name="experiences" value={formData.experiences} onChange={handleChange} required placeholder="Enter Doctor's experiences" />
+            </Form.Group>
+
             <Form.Group as={Col} controlId="available_from">
               <Form.Label>Available From</Form.Label>
               <Form.Control type="datetime-local" name="available_from" value={formData.available_from} onChange={handleChange} required placeholder="Select available from date and time" />
@@ -126,17 +131,6 @@ const AddDoctor = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpMo
             <Form.Group as={Col} controlId="available_to">
               <Form.Label>Available To</Form.Label>
               <Form.Control type="datetime-local" name="available_to" value={formData.available_to} onChange={handleChange} required placeholder="Select available to date and time" />
-            </Form.Group>
-          </Row>
-
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="experiences">
-              <Form.Label>Experiences</Form.Label>
-              <Form.Control type="number" name="experiences" value={formData.experiences} onChange={handleChange} required placeholder="Enter Doctor's experiences" />
-            </Form.Group>
-            <Form.Group as={Col} controlId="specialization">
-              <Form.Label>Specialization</Form.Label>
-              <Form.Control type="text" name="specialization" value={formData.specialization} onChange={handleChange} required placeholder="Enter Doctor's specialization" />
             </Form.Group>
           </Row>
 
@@ -150,6 +144,11 @@ const AddDoctor = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpMo
               <Form.Label>Rating</Form.Label>
               <Form.Control type="number" name="rating" value={formData.rating} onChange={handleChange} required placeholder="Enter Doctor's rating" />
             </Form.Group>
+
+            <Form.Group as={Col} controlId="specialization">
+              <Form.Label>Specialization</Form.Label>
+              <Form.Control type="text" name="specialization" value={formData.specialization} onChange={handleChange} required placeholder="Enter Doctor's specialization" />
+            </Form.Group>
           </Row>
 
           <Row className="mb-3">
@@ -162,9 +161,7 @@ const AddDoctor = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpMo
               <Form.Label>City</Form.Label>
               <Form.Control type="text" name="address.city" value={formData.city} onChange={handleChange} required placeholder="Enter Doctor's city" />
             </Form.Group>
-          </Row>
 
-          <Row className="mb-3">
             <Form.Group as={Col} controlId="state">
               <Form.Label>State</Form.Label>
               <Form.Control type="text" name="address.state" value={formData.state} onChange={handleChange} required placeholder="Enter Doctor's state" />

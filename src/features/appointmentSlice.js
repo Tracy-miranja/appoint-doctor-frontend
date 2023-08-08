@@ -1,57 +1,119 @@
-/* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 
-export const getAppointmentsThunk = createAsyncThunk('doctor/getDoctorsThunk', async () => {
-  try {
-    // const token = localStorage.getItem('');
-    const token = localStorage.getItem('token');
-    const response = await axios.get('http://127.0.0.1:3000/appointments/', {
-      headers: {
-        Authorization: `${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+const initialState = {
+  status: 'idle',
+  error: null,
+  appointments: [],
+  patients: [],
+  doctors: [],
+  authToken: sessionStorage.getItem('authToken') || null,
+};
 
-    return response.data;
+export const addAppointment = createAsyncThunk(
+  'appointments/addAppointment',
+  async (formData) => {
+    try {
+      const response = await axios.post('http://localhost:3000/appointments', formData, {
+        headers: {
+          Authorization: sessionStorage.getItem('authToken'),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+);
+
+export const fetchAppointments = createAsyncThunk('appointments/fetchAppointments', async () => {
+  try {
+    const [appointmentsResponse, patientsResponse, doctorsResponse] = await Promise.all([
+      axios.get('http://localhost:3000/appointments', {
+        headers: {
+          Authorization: sessionStorage.getItem('authToken'),
+        },
+      }),
+      axios.get('http://localhost:3000/users?role=patient'),
+      axios.get('http://localhost:3000/users?role=doctor'),
+    ]);
+
+    const appointments = appointmentsResponse.data;
+    const patients = patientsResponse.data;
+    const doctors = doctorsResponse.data;
+
+    return { appointments, patients, doctors };
   } catch (error) {
-    toast.error(error);
-    throw new Error('Failed to fetch doctors');
+    throw new Error(error.message);
   }
 });
 
-export const addAppointmentThunk = createAsyncThunk('appointments/addAppointmentThunk', async (appointmentData) => {
+export const deleteAppointment = createAsyncThunk('appointments/deleteAppointment', async (appointmentId) => {
   try {
-    const token = sessionStorage.getItem('authToken');
-
-    const response = await axios.post('http://127.0.0.1:3000/appointments/', appointmentData, {
+    await axios.delete(`http://localhost:3000/appointments/${appointmentId}`, {
       headers: {
-        Authorization: `${token}`,
-        'Content-Type': 'application/json',
+        Authorization: sessionStorage.getItem('authToken'),
       },
     });
-    return response.data;
+    return appointmentId;
   } catch (error) {
-    toast.error(error);
-    throw new Error('Failed to create appointment');
+    throw new Error(error.message);
   }
 });
 
-const myAppointmentsSlice = createSlice({
+const appointmentSlice = createSlice({
   name: 'appointments',
-  initialState: { myAppointments: [], status: 'idle' },
+  initialState,
+  reducers: {
+    setAuthToken(state, action) {
+      state.authToken = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getAppointmentsThunk.fulfilled, (state, action) => {
-        state.status = 'success';
-        state.myAppointments = action.payload;
+      .addCase(addAppointment.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
       })
-      .addCase(addAppointmentThunk.fulfilled, (state, action) => {
-        state.myAppointments.push(action.payload);
-        state.status = 'success';
+      .addCase(addAppointment.fulfilled, (state) => {
+        state.status = 'succeeded';
+      })
+      .addCase(addAppointment.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(fetchAppointments.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchAppointments.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.appointments = action.payload.appointments;
+        state.patients = action.payload.patients;
+        state.doctors = action.payload.doctors;
+      })
+
+      .addCase(fetchAppointments.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(deleteAppointment.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(deleteAppointment.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.appointments = state.appointments.filter(
+          (appointment) => appointment.id !== action.payload,
+        );
+      })
+      .addCase(deleteAppointment.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });
 
-export default myAppointmentsSlice.reducer;
+export const { setAuthToken } = appointmentSlice.actions;
+
+export default appointmentSlice.reducer;
