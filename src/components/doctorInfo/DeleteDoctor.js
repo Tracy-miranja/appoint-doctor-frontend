@@ -27,6 +27,51 @@ function DeleteDoctor() {
       </div>
     );
   }
+
+  if (status === 'failed') {
+    return (
+      <Container>
+        <Row>
+          <Col md={2} className="mb-4">
+            <NavBar />
+          </Col>
+          <Col md={10}>
+            <h1>{error || 'An error occurred'}</h1>
+            {totalCount > 0 && (
+              <div>
+                <h2>Because it has</h2>
+                <span>
+                  {totalCount}
+                  {' '}
+                  appointment
+                  {totalCount !== 1 ? 's' : ''}
+                  {' '}
+                  with patient
+                </span>
+                <span>please Cancel appointment first before deleting the doctor</span>
+              </div>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+
+  if (!doctors || doctors.length === 0) {
+    return (
+      <Container>
+        <Row>
+          <Col md={2} className="mb-4">
+            <NavBar />
+          </Col>
+          <Col md={10}>
+            <h1>No Doctor found.</h1>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+  
   return (
     <div>
       <h2>Delete Doctor Page</h2>
