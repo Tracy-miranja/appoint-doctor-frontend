@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Container, Row, Col, Form, Button,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import NavBar from '../navbar/NavBar';
 import { addAppointment } from '../../features/appointmentSlice';
-import { fetchDoctors } from '../../features/doctorSlice';
 import './appointment.css';
-import { formatDateAndTime } from './MyAppointments';
 
-const Appointment = () => {
+const ModalAppoint = () => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const { userName, userID } = useSelector((state) => state.auth);
-  const doctors = useSelector((state) => state.doctors.doctors);
-  useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
 
   const initialFormData = {
     appointment_date: '',
     patient_id: userID,
-    doctor_id: '',
+    doctor_id: id,
     status: {
       active: true,
       expire: false,
@@ -81,35 +77,6 @@ const Appointment = () => {
                   readOnly
                 />
               </Form.Group>
-
-              <Form.Group controlId="doctorId">
-                <Form.Label>Select Doctor</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="doctor_id"
-                  value={formData.doctor_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select a doctor...</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      {doctor.name}
-                      {' '}
-                      -
-                      {' '}
-                      {doctor.specialization}
-                      <p>Availability:</p>
-                      {'From: '}
-                      {formatDateAndTime(doctor.available_from)}
-                      {' '}
-                      {'To: '}
-                      {formatDateAndTime(doctor.available_to)}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-
               <Form.Group controlId="appointmentDate">
                 <Form.Label>Appointment Date</Form.Label>
                 <Form.Control
@@ -183,4 +150,4 @@ const Appointment = () => {
   );
 };
 
-export default Appointment;
+export default ModalAppoint;
