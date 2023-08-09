@@ -151,6 +151,7 @@ npm run start
 ## <a> 👤 Akpan Daniel</a>
 
 - GitHub: [Akpan Daniel](https://github.com/danutibe07)
+- Twitter: [Akpan Daniel](https://twitter.com/Danielutibe07)
 - LinkedIn: [Akpan Daniel](https://www.linkedin.com/in/danutibe07/)
 
 ## <a> 👤 Tracy Miranja</a>
