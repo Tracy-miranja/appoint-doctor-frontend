@@ -120,9 +120,7 @@ npm run start
 
 ### Test
 
-```sh
-  npm run test
-```
+- Our Team is trying to write the test.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
