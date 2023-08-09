@@ -11,7 +11,7 @@ const initialState = {
 };
 
 // Thunk to handle signUp
-export const signUp = createAsyncThunk('auth/signUp', async (userData) => {
+export const signUp = createAsyncThunk('auth/signUp', async (userData, { rejectWithValue }) => {
   try {
     const response = await axios.post('https://booking-doctor-api-v1.onrender.com/users', {
       user: {
@@ -33,7 +33,8 @@ export const signUp = createAsyncThunk('auth/signUp', async (userData) => {
 
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    const errorMessage = error.response.data.status.errors;
+    return rejectWithValue(errorMessage);
   }
 });
 
@@ -81,7 +82,7 @@ const authSlice = createSlice({
       .addCase(signUp.rejected, (state, action) => {
         state.isAuthenticated = false;
         state.authToken = null;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Toast } from 'react-bootstrap';
 import HomeDoctors from './HomeDoctors';
 import SignUpForm from '../signUpInOut/SignUpForm';
 import { signIn } from '../../features/authSlice';
 import './homepage.css';
 
-function HomePage() {
+const HomePage = () => {
   const dispatch = useDispatch();
   const { error, isAuthenticated } = useSelector((state) => state.auth);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+
+  const handleSignUpSuccess = () => {
+    setShowSuccessToast(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,9 +104,24 @@ function HomePage() {
         showSignUpModal={showSignUpModal}
         handleCloseSignUpModal={handleCloseSignUpModal}
         handleOpenSignUpModal={handleOpenSignUpModal}
+        handleSignUpSuccess={handleSignUpSuccess}
       />
+
+      <Toast
+        show={showSuccessToast}
+        onClose={() => setShowSuccessToast(false)}
+        style={{
+          position: 'fixed',
+          top: '0',
+        }}
+      >
+        <Toast.Header closeButton>
+          <strong className="me-auto">Message: </strong>
+        </Toast.Header>
+        <Toast.Body>{errorMessage || 'succeeded'}</Toast.Body>
+      </Toast>
     </div>
   );
-}
+};
 
 export default HomePage;

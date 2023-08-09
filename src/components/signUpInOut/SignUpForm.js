@@ -25,7 +25,9 @@ const initialFormData = {
   address: { ...initialAddressData },
 };
 
-const SignUpForm = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpModal }) => {
+const SignUpForm = ({
+  showSignUpModal, handleCloseSignUpModal, handleOpenSignUpModal, handleSignUpSuccess,
+}) => {
   const [formData, setFormData] = useState({ ...initialFormData });
   const dispatch = useDispatch();
 
@@ -49,10 +51,15 @@ const SignUpForm = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpM
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signUp(formData));
-    window.location.href = '/';
+    try {
+      await dispatch(signUp(formData));
+      handleSignUpSuccess();
+      handleCloseSignUpModal();
+    } catch (error) {
+      setFormData({ ...initialFormData });
+    }
   };
 
   return (
@@ -141,7 +148,8 @@ const SignUpForm = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpM
 
 SignUpForm.propTypes = {
   // eslint-disable-next-line react/require-default-props
-  showSignUpModal: PropTypes.bool,
+  showSignUpModal: PropTypes.bool.isRequired,
+  handleSignUpSuccess: PropTypes.func.isRequired,
   handleCloseSignUpModal: PropTypes.func.isRequired,
   handleOpenSignUpModal: PropTypes.func.isRequired,
 };
