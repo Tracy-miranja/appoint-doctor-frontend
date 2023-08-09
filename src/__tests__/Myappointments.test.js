@@ -1,9 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 import { act } from 'react-dom/test-utils';
 import renderer from 'react-test-renderer';
 import MyAppointments from '../components/appointmentInfo/MyAppointments';
@@ -38,8 +37,8 @@ describe('MyAppointments Component', () => {
         city: 'Los Angeles',
         zip_code: '90001',
       // ... (rest of the data)
-   },
-},
+      },
+    },
   ];
 
   const mockDoctors = [
