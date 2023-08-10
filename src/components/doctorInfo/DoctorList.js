@@ -105,6 +105,6 @@ const DoctorList = () => {
       </div>
     </div>
   );
-}
+};
 
 export default DoctorList;
