@@ -112,6 +112,6 @@ const DeleteDoctor = () => {
       </Row>
     </Container>
   );
-}
+};
 
 export default DeleteDoctor;

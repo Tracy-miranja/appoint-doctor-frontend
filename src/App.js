@@ -11,23 +11,21 @@ import UserList from './components/forSuperUser/UserList';
 import DoctorDetails from './components/doctorInfo/DoctorDetails';
 import ModalAppoint from './components/appointmentInfo/ModalAppoint';
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/doctors" element={<DoctorList />} />
-        <Route path="/doctor_details/:id" element={<DoctorDetails />} />
-        <Route path="/delete_doctor" element={<DeleteDoctor />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/appointment/:id" element={<ModalAppoint />} />
-        <Route path="/my_appointments" element={<MyAppointments />} />
-        <Route path="/user_list" element={<UserList />} />
-        <Route path="/patients" element={<PatientList />} />
-        <Route path="/appointment_list" element={<AppointmentList />} />
-      </Routes>
-    </Router>
-  );
-}
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/doctors" element={<DoctorList />} />
+      <Route path="/doctor_details/:id" element={<DoctorDetails />} />
+      <Route path="/delete_doctor" element={<DeleteDoctor />} />
+      <Route path="/appointment" element={<Appointment />} />
+      <Route path="/appointment/:id" element={<ModalAppoint />} />
+      <Route path="/my_appointments" element={<MyAppointments />} />
+      <Route path="/user_list" element={<UserList />} />
+      <Route path="/patients" element={<PatientList />} />
+      <Route path="/appointment_list" element={<AppointmentList />} />
+    </Routes>
+  </Router>
+);
 
 export default App;

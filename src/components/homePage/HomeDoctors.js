@@ -1,12 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { fetchDoctors } from '../../features/doctorSlice';
 
-function HomeDoctors() {
+const HomeDoctors = () => {
   const dispatch = useDispatch();
   const { status, error, doctors } = useSelector((state) => state.doctors);
   const [showMessage, setShowMessage] = useState(false);
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  const groupSize = 3;
+  const totalGroups = Math.ceil(doctors.length / groupSize);
 
   const handleAppointmentClick = () => {
     setShowMessage(true);
@@ -15,11 +19,22 @@ function HomeDoctors() {
     }, 5000);
   };
 
+  const handleNextGroup = () => {
+    setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % totalGroups);
+  };
+
+  const handlePrevGroup = () => {
+    setCurrentGroupIndex((prevIndex) => (prevIndex - 1 + totalGroups) % totalGroups);
+  };
+
   useEffect(() => {
     dispatch(fetchDoctors());
   }, [dispatch]);
 
-  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  useEffect(() => {
+    const timerId = setTimeout(handleNextGroup, 19000);
+    return () => clearTimeout(timerId);
+  }, [currentGroupIndex, handleNextGroup]);
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -38,21 +53,6 @@ function HomeDoctors() {
   if (!doctors || doctors.length === 0) {
     return <div>No doctors found.</div>;
   }
-
-  const groupSize = 3;
-  const totalGroups = Math.ceil(doctors.length / groupSize);
-
-  const handleNextGroup = () => {
-    setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % totalGroups);
-  };
-
-  const handlePrevGroup = () => {
-    setCurrentGroupIndex((prevIndex) => (prevIndex - 1 + totalGroups) % totalGroups);
-  };
-
-  setTimeout(() => {
-    handleNextGroup();
-  }, 19000);
 
   return (
     <>
@@ -89,14 +89,11 @@ function HomeDoctors() {
         </button>
       </div>
       <div className="d-flex flex-column align-items-center">
-
         <Button onClick={handleAppointmentClick}>Make Appointment Now</Button>
-        {showMessage && (
-        <p className="mt-2">Before booking, please login or sign in.</p>
-        )}
+        {showMessage && <p className="mt-2">Before booking, please login or sign in.</p>}
       </div>
     </>
   );
-}
+};
 
 export default HomeDoctors;

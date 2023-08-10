@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../features/authSlice';
 import AddDoctor from '../doctorInfo/AddDoctor';
 
-function NavBar() {
+const NavBar = () => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const { userRole } = useSelector((state) => state.auth);
   const isAdmin = () => userRole === 'admin';
@@ -227,6 +227,6 @@ function NavBar() {
       />
     </>
   );
-}
+};
 
 export default NavBar;
