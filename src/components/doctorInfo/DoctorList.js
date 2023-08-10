@@ -5,7 +5,7 @@ import { FaCaretLeft, FaCaretRight } from 'react-icons/fa6';
 import { fetchDoctors } from '../../features/doctorSlice';
 import NavBar from '../navbar/Navbar';
 
-function DoctorList() {
+const DoctorList = () => {
   const dispatch = useDispatch();
   const { status, error, doctors } = useSelector((state) => state.doctors);
 
