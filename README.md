@@ -120,7 +120,9 @@ npm run start
 
 ### Test
 
-- Our Team is trying to write the test.
+```sh
+npm run test
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -173,11 +175,11 @@ npm run start
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-[See Live on render]()
+[See Live on render](https://profound-heliotrope-436869.netlify.app/)
 
-## 🪵 Link to Frontend <a name="key-features"></a>
+## 🪵 Link to Backend Repo <a name="key-features"></a>
 
-- [Frontend](https://github.com/Tracy-miranja/appoint-doctor-frontend)
+- [Backend](https://github.com/Tracy-miranja/appoint-doctor-backend)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
