@@ -4,7 +4,6 @@ import HomePage from './components/homePage/HomePage';
 import MyAppointments from './components/appointmentInfo/MyAppointments';
 import DoctorList from './components/doctorInfo/DoctorList';
 import DeleteDoctor from './components/doctorInfo/DeleteDoctor';
-import PatientList from './components/forSuperUser/PatientList';
 import Appointment from './components/appointmentInfo/Appointment';
 import AppointmentList from './components/forSuperUser/AppointmentList';
 import UserList from './components/forSuperUser/UserList';
@@ -23,7 +22,6 @@ function App() {
         <Route path="/appointment/:id" element={<ModalAppoint />} />
         <Route path="/my_appointments" element={<MyAppointments />} />
         <Route path="/user_list" element={<UserList />} />
-        <Route path="/patients" element={<PatientList />} />
         <Route path="/appointment_list" element={<AppointmentList />} />
       </Routes>
     </Router>

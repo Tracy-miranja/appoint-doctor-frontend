@@ -12,7 +12,7 @@ const initialState = {
 };
 
 // Async Thunk for adding a doctor
-export const addDoctor = createAsyncThunk('doctors/addDoctor', async (doctorData) => {
+export const addDoctor = createAsyncThunk('doctors/addDoctor', async (doctorData, { rejectWithValue }) => {
   try {
     const response = await axios.post(BASE_URL, {
       user: {
@@ -41,7 +41,8 @@ export const addDoctor = createAsyncThunk('doctors/addDoctor', async (doctorData
     });
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    const errorMessage = error.response.data.status.errors;
+    return rejectWithValue(errorMessage);
   }
 });
 
@@ -95,7 +96,7 @@ const doctorsSlice = createSlice({
       })
       .addCase(addDoctor.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(fetchDoctors.pending, (state) => {
         state.status = 'loading';
