@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FaXmark } from 'react-icons/fa6';
 import {
@@ -35,12 +36,19 @@ const initialFormData = {
 
 const AddDoctor = ({ showSignUpModal, handleCloseSignUpModal, handleOpenSignUpModal }) => {
   const [formData, setFormData] = useState({ ...initialFormData });
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
+  const status = useSelector((state) => state.doctors.status);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addDoctor(formData));
+    await dispatch(addDoctor(formData));
+
+    if (status === 'succeeded') {
+      handleCloseSignUpModal();
+      navigate('/doctors', { state: { message: 'success' } });
+    } else if (status === 'failed') {
+      navigate('/doctors', { state: { message: 'Failed to add doctor' } });
+    }
   };
 
   const handleChange = (e) => {

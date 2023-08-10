@@ -15,7 +15,7 @@ function NavBar() {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const { userRole } = useSelector((state) => state.auth);
   const isAdmin = () => userRole === 'admin';
-  const isSuperAdmin = () => userRole === 'Super Admin';
+  const isSuperAdmin = () => userRole === 'super_admin';
   const handleCloseSignUpModal = () => {
     setShowSignUpModal(false);
   };
@@ -65,19 +65,19 @@ function NavBar() {
           <div className="d-flex flex-column flex-grow-1 px-0">
             <Button
               onClick={handleOpenSignUpModal}
-              disabled={!isAdmin()}
-              className={` p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
+              className={`p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
+              disabled={!isAdmin() && !isSuperAdmin()}
             >
               Add Doctor
             </Button>
-            {isAdmin() ? (
+            {isAdmin() || isSuperAdmin() ? (
               <NavLink to="/delete_doctor" activeClassName="active" isActive={() => isActiveLink('/delete_doctor')} className="p-3">
                 Delete Doctor
               </NavLink>
             ) : (
               <Button
                 className={`p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
-                disabled={!isAdmin()}
+                disabled={!isAdmin() || !isSuperAdmin()}
               >
                 Delete Doctor
               </Button>
@@ -94,11 +94,10 @@ function NavBar() {
             <NavDropdown.Item as="button" onClick={handleSignOut} className="p-3">
               Sign Out
             </NavDropdown.Item>
-            {isSuperAdmin() || isAdmin() ? (
-              <NavDropdown title="For Super Admin" id="nav-dropdown" className="p-3">
+            {isSuperAdmin() ? (
+              <NavDropdown title="For Super Admin" id="nav-dropdown" className="p-3 super_admin">
                 <NavDropdown.Item href="/user_list">User Lists</NavDropdown.Item>
                 <NavDropdown.Item href="/appointment_list">Appointments Lists</NavDropdown.Item>
-                <NavDropdown.Item href="/patients">Patient Lists</NavDropdown.Item>
                 <NavDropdown.Divider />
               </NavDropdown>
             ) : (
@@ -140,7 +139,7 @@ function NavBar() {
               <Offcanvas.Title>Menu</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <div className="d-flex flex-column border-end h-100 bg-light">
+              <div className="d-flex flex-column border-end h-100 bg-white">
                 <div className="d-flex align-items-center p-3">
                   <span>
                     <FaLandmark />
@@ -153,8 +152,8 @@ function NavBar() {
                 <div className="d-flex flex-column flex-grow-1 px-0">
                   <Button
                     onClick={handleOpenSignUpModal}
-                    disabled={!isAdmin()}
-                    className={` p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
+                    className={`p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
+                    disabled={!isAdmin() && !isSuperAdmin()}
                   >
                     Add Doctor
                   </Button>
@@ -165,7 +164,7 @@ function NavBar() {
                   ) : (
                     <Button
                       className={`p-3 add_doctor_btn nav-link ${isActiveLink('/add_doctor') ? 'active' : ''}`}
-                      disabled={!isAdmin()}
+                      disabled={!isAdmin() || !isSuperAdmin()}
                     >
                       Delete Doctor
                     </Button>
@@ -182,11 +181,10 @@ function NavBar() {
                   <NavDropdown.Item as="button" onClick={handleSignOut} className="p-3">
                     Sign Out
                   </NavDropdown.Item>
-                  {isSuperAdmin() || isAdmin() ? (
-                    <NavDropdown title="For Super Admin" id="nav-dropdown" className="p-3">
+                  {isSuperAdmin() ? (
+                    <NavDropdown title="For Super Admin" id="nav-dropdown" className="p-3 super_admin">
                       <NavDropdown.Item href="/user_list">User Lists</NavDropdown.Item>
                       <NavDropdown.Item href="/appointment_list">Appointments Lists</NavDropdown.Item>
-                      <NavDropdown.Item href="/patients">Patient Lists</NavDropdown.Item>
                       <NavDropdown.Divider />
                     </NavDropdown>
                   ) : (

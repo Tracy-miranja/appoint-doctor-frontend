@@ -7,11 +7,9 @@ import { fetchAppointments, deleteAppointment } from '../../features/appointment
 import NavBar from '../navbar/Navbar';
 
 // Define formatLocation function
-function formatLocation(location) {
-  return `${location.street}, ${location.state}, ${location.city}, ${location.zip_code}`;
-}
+export const formatLocation = (location) => `${location.street}, ${location.state}, ${location.city}, ${location.zip_code}`;
 
-export function formatDateAndTime(dateTimeString) {
+export const formatDateAndTime = (dateTimeString) => {
   const date = new Date(dateTimeString);
   const formattedDate = date.toLocaleDateString(undefined, {
     year: 'numeric',
@@ -24,7 +22,7 @@ export function formatDateAndTime(dateTimeString) {
   });
 
   return `${formattedDate}, ${formattedTime}`;
-}
+};
 
 function MyAppointments() {
   const dispatch = useDispatch();

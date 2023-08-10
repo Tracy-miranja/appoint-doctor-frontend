@@ -9,3 +9,8 @@ a {
   background-color: #97bd28;
   color: white !important;
 }
+
+.super_admin a {
+  font-weight: 600;
+  color: #97bd28;
+}

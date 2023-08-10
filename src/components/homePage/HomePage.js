@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form, Toast } from 'react-bootstrap';
 import HomeDoctors from './HomeDoctors';
 import SignUpForm from '../signUpInOut/SignUpForm';
@@ -7,8 +8,11 @@ import { signIn } from '../../features/authSlice';
 import './homepage.css';
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error, isAuthenticated } = useSelector((state) => state.auth);
+  const {
+    error, isAuthenticated, authToken, userRole,
+  } = useSelector((state) => state.auth);
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
@@ -48,10 +52,10 @@ const HomePage = () => {
 
   useEffect(() => {
     setErrorMessage(error);
-    if (isAuthenticated) {
-      window.location.href = '/doctors';
+    if (isAuthenticated && authToken && userRole) {
+      navigate('/doctors');
     }
-  }, [error, isAuthenticated]);
+  }, [error, isAuthenticated, navigate, authToken, userRole]);
 
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const handleCloseSignUpModal = () => {
@@ -113,12 +117,15 @@ const HomePage = () => {
         style={{
           position: 'fixed',
           top: '0',
+          left: '30%',
+          color: '#3446eb',
+          fontWeight: '500',
         }}
       >
         <Toast.Header closeButton>
           <strong className="me-auto">Message: </strong>
         </Toast.Header>
-        <Toast.Body>{errorMessage || 'succeeded'}</Toast.Body>
+        <Toast.Body>{errorMessage || 'Congrats! Successfully Created the Account, Please Sign In Now'}</Toast.Body>
       </Toast>
     </div>
   );
