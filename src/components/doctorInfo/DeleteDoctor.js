@@ -6,7 +6,7 @@ import {
 import NavBar from '../navbar/Navbar';
 import { fetchDoctors, deleteDoctor } from '../../features/doctorSlice';
 
-function DeleteDoctor() {
+const DeleteDoctor = () => {
   const dispatch = useDispatch();
   const {
     status, error, doctors, references,
